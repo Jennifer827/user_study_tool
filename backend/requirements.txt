@@ -1,0 +1,3 @@
+Flask
+flask-cors
+# 必要なら SQLAlchemy なども追加
