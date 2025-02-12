@@ -1,3 +1,4 @@
+# jsonをcsvに変換し, ダウンロード可能にする. 
 from flask import Blueprint, jsonify, send_file
 import json
 import csv
@@ -10,7 +11,6 @@ CSV_FILE = "exported_data.csv"
 
 @export_bp.route('/api/export_csv', methods=['GET'])
 def export_csv():
-    """保存された JSON を CSV に変換し、ダウンロード可能にする"""
     if not os.path.exists(DATA_FILE):
         return jsonify({"error": "No data available"}), 404
 
