@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import API_URL from "./config";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [response, setResponse] = useState(null);
+
+  const handleSubmit = async () => {
+    const data = { message: "Hello from React!" };
+
+    try {
+      const res = await fetch(`${API_URL}/api/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
+      const result = await res.json();
+      setResponse(result);
+    } catch (error) {
+      console.error("Error sending request:", error);
+      setResponse({ error: "Failed to connect to backend" });
+    }
+  };
+
+  // CSVをダウンロードする関数
+  const handleDownloadCSV = () => {
+    window.location.href = `${API_URL}/api/export_csv`;
+  };
 
   return (
-    <>
+    <div>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>React ↔ Flask API Test</h1>
+        <button onClick={handleSubmit}>Send Request</button>
+        {response && <pre>{JSON.stringify(response, null, 2)}</pre>}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div>
+        <h1>被験者実験のデータ管理</h1>
+        <button onClick={handleDownloadCSV}>CSVをダウンロード</button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

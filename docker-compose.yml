@@ -1,4 +1,4 @@
-version: "3"
+# version: "3"
 services:
   backend:
     build: ./backend
@@ -8,6 +8,8 @@ services:
       - ./backend:/app
     environment:
       - FLASK_ENV=development
+    networks:
+      - app_network
   frontend:
     build: ./frontend
     ports:
@@ -15,7 +17,15 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - app_network
     environment:
       # Create React Appのホットリロードに必要な場合
       # - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
+
+networks:
+  app_network: # ここで明示的にネットワークを定義
+    driver: bridge
