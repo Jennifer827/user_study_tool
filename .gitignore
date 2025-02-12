@@ -1,6 +1,6 @@
 frontend/node_modules
 __pycache__/
 backend/__pycache__
-*.json
+data.json
 *.pyc
 *.csv

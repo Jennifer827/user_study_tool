@@ -1,64 +1,14 @@
-// import { useState } from "react";
-// import API_URL from "./config";
-
-// function App() {
-//   const [response, setResponse] = useState(null);
-
-//   const handleSubmit = async () => {
-//     const data = { message: "Hello from React!" };
-
-//     try {
-//       const res = await fetch(`${API_URL}/api/submit`, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(data),
-//       });
-
-//       if (!res.ok) {
-//         throw new Error(`HTTP error! Status: ${res.status}`);
-//       }
-
-//       const result = await res.json();
-//       setResponse(result);
-//     } catch (error) {
-//       console.error("Error sending request:", error);
-//       setResponse({ error: "Failed to connect to backend" });
-//     }
-//   };
-
-//   // CSVをダウンロードする関数
-//   const handleDownloadCSV = () => {
-//     window.location.href = `${API_URL}/api/export_csv`;
-//   };
-
-//   return (
-//     <div>
-//       <div>
-//         <h1>React ↔ Flask API Test</h1>
-//         <button onClick={handleSubmit}>Send Request</button>
-//         {response && <pre>{JSON.stringify(response, null, 2)}</pre>}
-//       </div>
-//       <div>
-//         <h1>被験者実験のデータ管理</h1>
-//         <button onClick={handleDownloadCSV}>CSVをダウンロード</button>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-// src/App.jsx
-import { useState } from "react";
+// src/App.tsx
+import React, { useState } from "react";
 import API_URL from "./config";
 
-function App() {
+const App: React.FC = () => {
   // ユーザー入力とバックエンドからのレスポンスの状態管理
-  const [userInput, setUserInput] = useState("");
-  const [response, setResponse] = useState(null);
+  const [userInput, setUserInput] = useState<string>("");
+  const [response, setResponse] = useState<any>(null);
 
   // 入力フォームの送信処理
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // ページリロードを防止
     const data = { user_input: userInput }; // 送信データ
 
@@ -74,7 +24,7 @@ function App() {
       const result = await res.json();
       setResponse(result);
       setUserInput(""); // 送信後、入力欄をリセット
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error sending request:", error);
       setResponse({ error: "Failed to connect to backend" });
     }
@@ -94,7 +44,9 @@ function App() {
           <input
             type="text"
             value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUserInput(e.target.value)
+            }
             style={{ marginLeft: "0.5rem" }}
           />
         </label>
@@ -116,6 +68,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
