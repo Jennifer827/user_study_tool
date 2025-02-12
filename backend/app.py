@@ -1,7 +1,16 @@
-from flask import Flask
+from flask import Flask, jsonify, request, send_file
+from flask_cors import CORS
+
+# ルートをインポート
+from routes.submit import submit_data
+from routes.export import export_csv
 
 app = Flask(__name__)
+CORS(app)  # CORSの設定
 
-@app.route('/')
-def hello():
-    return "Hello, World!"
+# ブループリントを登録
+app.register_blueprint(submit_data)
+app.register_blueprint(export_csv)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
