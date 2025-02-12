@@ -1,15 +1,17 @@
+# フロントエンドから受け取ったデータをJSONに保存し, 受信内容をレスポンスとして返す. 
 from flask import Blueprint, request, jsonify
 import json
 import os
 
-submit_bp = Blueprint('submit', __name__)
+submit_data = Blueprint('submit', __name__)
 
 DATA_FILE = "data.json"
 
-@submit_bp.route('/api/submit', methods=['POST'])
+@submit_data.route('/api/submit', methods=['POST'])
 def submit():
-    """フロントエンドから受け取ったデータを JSON に保存"""
     data = request.json  # フロントエンドからの JSON データを取得
+    if data is None:
+        return jsonify({"error": "Invalid JSON data"}), 400
     print(f"Received data: {data}")
 
     # 既存の JSON データを読み込む

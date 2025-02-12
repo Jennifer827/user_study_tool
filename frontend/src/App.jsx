@@ -82,7 +82,7 @@ function App() {
 
   // CSVをダウンロードする処理
   const handleDownloadCSV = () => {
-    window.location.href = `${API_URL}/api/export_csv`;
+    window.location.href = `${API_URL}/api/export`;
   };
 
   return (

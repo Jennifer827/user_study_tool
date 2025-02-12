@@ -4,13 +4,13 @@ import json
 import csv
 import os
 
-export_bp = Blueprint('export', __name__)
+export_csv = Blueprint('export', __name__)
 
 DATA_FILE = "data.json"
 CSV_FILE = "exported_data.csv"
 
-@export_bp.route('/api/export_csv', methods=['GET'])
-def export_csv():
+@export_csv.route('/api/export', methods=['GET'])
+def export():
     if not os.path.exists(DATA_FILE):
         return jsonify({"error": "No data available"}), 404
 
