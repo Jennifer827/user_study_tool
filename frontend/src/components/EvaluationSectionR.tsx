@@ -1,5 +1,5 @@
 import React from "react";
-import VideoWithEvaluation from "./RatingButtons";
+import VideoWithEvaluation from "./VideoWithEvaluation";
 
 const evaluationLabels = [
   "Visual Quality",
@@ -8,51 +8,86 @@ const evaluationLabels = [
   "Overall Quality",
 ];
 
-const EvaluationSectionR: React.FC = () => {
+interface Props {
+  videoSrc1: string;
+  videoTitle1: string;
+  videoSrc2: string;
+  videoTitle2: string;
+}
+
+const EvaluationSectionR: React.FC<Props> = ({
+  videoSrc1,
+  videoTitle1,
+  videoSrc2,
+  videoTitle2,
+}) => {
   const handleEvaluationChangeVideo1 = (
     criterionIndex: number,
     rating: number
   ) => {
-    console.log(`Video 1 - ${evaluationLabels[criterionIndex]}: ${rating}`);
-    // ここで必要なら、さらに状態更新や他の処理を実施
+    console.log(
+      `${videoTitle1} - ${evaluationLabels[criterionIndex]}: ${rating}`
+    );
   };
 
   const handleEvaluationChangeVideo2 = (
     criterionIndex: number,
     rating: number
   ) => {
-    console.log(`Video 2 - ${evaluationLabels[criterionIndex]}: ${rating}`);
+    console.log(
+      `${videoTitle2} - ${evaluationLabels[criterionIndex]}: ${rating}`
+    );
   };
 
   return (
-    <div style={appContainerStyle}>
-      <div style={videosContainerStyle}>
-        <VideoWithEvaluation
-          videoSrc="/video1.mp4"
-          videoTitle="Video 1"
-          evaluationLabels={evaluationLabels}
-          onEvaluationChange={handleEvaluationChangeVideo1}
-        />
-        <VideoWithEvaluation
-          videoSrc="/video2.mp4"
-          videoTitle="Video 2"
-          evaluationLabels={evaluationLabels}
-          onEvaluationChange={handleEvaluationChangeVideo2}
-        />
+    <div style={videosContainerStyle}>
+      <VideoWithEvaluation
+        videoSrc={videoSrc1}
+        videoTitle={videoTitle1}
+        evaluationLabels={evaluationLabels}
+        onEvaluationChange={handleEvaluationChangeVideo1}
+      />
+      <div style={originalContainerStyle}>
+        <h2 style={titleStyle}>Original Image</h2>
+        <img src="/original.png" style={originalImageStyle} alt="Original" />
       </div>
+      <VideoWithEvaluation
+        videoSrc={videoSrc2}
+        videoTitle={videoTitle2}
+        evaluationLabels={evaluationLabels}
+        onEvaluationChange={handleEvaluationChangeVideo2}
+      />
     </div>
   );
 };
 
-const appContainerStyle: React.CSSProperties = {
-  padding: "1rem",
-  fontFamily: "sans-serif",
-};
-
+// スタイルの修正
 const videosContainerStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-around",
   flexWrap: "wrap",
+  width: "100%",
+  maxWidth: "4000px",
+  margin: "0 auto",
+};
+
+const originalContainerStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  textAlign: "center",
+  margin: "0 20px",
+};
+
+const originalImageStyle: React.CSSProperties = {
+  width: "100%",
+  maxWidth: "500px",
+  height: "auto",
+  borderRadius: "10px",
+};
+
+const titleStyle: React.CSSProperties = {
+  textAlign: "center",
 };
 
 export default EvaluationSectionR;

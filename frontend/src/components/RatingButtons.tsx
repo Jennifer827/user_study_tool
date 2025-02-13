@@ -3,16 +3,12 @@ import React, { useState } from "react";
 import API_URL from "../config";
 
 interface VideoWithEvaluationProps {
-  videoSrc: string;
-  videoTitle: string;
   evaluationLabels: string[];
   // 必要なら親へ評価変更を通知するコールバックも追加可能
   onEvaluationChange?: (criterionIndex: number, rating: number) => void;
 }
 
 const RatingButtons: React.FC<VideoWithEvaluationProps> = ({
-  videoSrc,
-  videoTitle,
   evaluationLabels,
   onEvaluationChange,
 }) => {
@@ -28,7 +24,6 @@ const RatingButtons: React.FC<VideoWithEvaluationProps> = ({
   ) => {
     try {
       const payload = {
-        videoTitle: videoTitle,
         criterion: evaluationLabels[criterionIndex],
         rating: rating,
       };
@@ -61,15 +56,6 @@ const RatingButtons: React.FC<VideoWithEvaluationProps> = ({
 
   return (
     <div style={containerStyle}>
-      <h2 style={titleStyle}>{videoTitle}</h2>
-      <video
-        src={videoSrc}
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={videoStyle}
-      />
       <div style={evaluationContainerStyle}>
         {evaluationLabels.map((label, index) => (
           <div key={index} style={evaluationRowStyle}>
@@ -101,18 +87,6 @@ const containerStyle: React.CSSProperties = {
   flexDirection: "column",
   alignItems: "center",
   margin: "1rem",
-};
-
-const titleStyle: React.CSSProperties = {
-  marginBottom: "0.5rem",
-};
-
-const videoStyle: React.CSSProperties = {
-  width: "100%",
-  maxWidth: "500px",
-  height: "auto",
-  borderRadius: "10px",
-  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
 };
 
 const evaluationContainerStyle: React.CSSProperties = {
