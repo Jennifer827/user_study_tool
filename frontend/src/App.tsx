@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import EvaluationSectionR from "./components/EvaluationSectionR";
 import EvaluationSectionG from "./components/EvaluationSectionG";
 import ProgressBar from "./components/ProgressBar";
-import InputForm from "./components/InputForm";
 
 const TOTAL_EVALUATIONS_PER_MODE = 15;
 const TOTAL_EVALUATIONS = TOTAL_EVALUATIONS_PER_MODE * 2; // 30件
+
+interface SelectedData {
+  model1: string;
+  model2: string;
+  data: string;
+}
 
 const App: React.FC = () => {
   const [currentEvaluation, setCurrentEvaluation] = useState<number>(1); // 現在の評価番号（1～30）
@@ -43,22 +48,20 @@ const App: React.FC = () => {
   }
   return (
     <div style={appContainerStyle}>
-      <h1>3D生成モデル評価実験</h1>
+      {/* <h1>3D生成モデル評価実験</h1> */}
       <ProgressBar current={currentEvaluation} total={TOTAL_EVALUATIONS} />
       {mode === "reconstruction" ? (
         <EvaluationSectionR
-          videoSrc1="/video1.mp4"
-          videoTitle1="Model 1"
-          videoSrc2="/video2.mp4"
-          videoTitle2="Model 2"
+          videoSrc1="/video3.mp4"
+          videoSrc2="/video4.mp4"
+          originalImageSrc="/chicken.png"
           onNext={handleNext}
         />
       ) : (
         <EvaluationSectionG
-          videoSrc1="/video1.mp4"
-          videoTitle1="Model 1"
-          videoSrc2="/video2.mp4"
-          videoTitle2="Model 2"
+          // videoSrc1="/video3.mp4"
+          // videoSrc2="/video4.mp4"
+          // originalImageSrc="/chicken.png"
           onNext={handleNext}
         />
       )}
