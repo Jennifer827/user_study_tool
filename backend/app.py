@@ -7,6 +7,7 @@ from routes.export import export_csv
 from routes.submit_rating import submit_rating
 from routes.getRandomR import getRandomR
 from routes.getRandomG import getRandomG
+from routes.listImages import listImages
 
 app = Flask(__name__)
 CORS(app)  # CORSの設定
@@ -17,6 +18,7 @@ app.register_blueprint(export_csv)
 app.register_blueprint(submit_rating)
 app.register_blueprint(getRandomR)
 app.register_blueprint(getRandomG)
+app.register_blueprint(listImages)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
