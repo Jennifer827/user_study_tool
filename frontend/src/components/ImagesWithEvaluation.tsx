@@ -1,5 +1,5 @@
-// src/components/RatingButtons.tsx
-import React, { useState } from "react";
+// export default ImagesWithEvaluation;
+import React from "react";
 import RatingButtons from "./RatingButtons";
 import Slideshow from "./SlideShow";
 
@@ -7,7 +7,8 @@ interface ImagesWithEvaluationProps {
   imageUrls: string[];
   imageTitle: string;
   evaluationLabels: string[];
-  // 必要なら親へ評価変更を通知するコールバックも追加可能
+  // 追加: グローバルな現在のスライドインデックス
+  currentSlideIndex: number;
   onEvaluationChange?: (criterionIndex: number, rating: number) => void;
 }
 
@@ -15,18 +16,13 @@ const ImagesWithEvaluation: React.FC<ImagesWithEvaluationProps> = ({
   imageUrls,
   imageTitle,
   evaluationLabels,
+  currentSlideIndex,
   onEvaluationChange,
 }) => {
-  // 各評価観点ごとの評価状態（初期はnull）
-  const [evaluationRatings, setEvaluationRatings] = useState<(number | null)[]>(
-    new Array(evaluationLabels.length).fill(null)
-  );
-  // バックエンドに評価結果を送信する非同期関数
-
   return (
     <div style={containerStyle}>
       <h2 style={titleStyle}>{imageTitle}</h2>
-      <Slideshow imageUrls={imageUrls} />
+      <Slideshow imageUrls={imageUrls} currentIndex={currentSlideIndex} />
       <div style={evaluationContainerStyle}>
         <RatingButtons evaluationLabels={evaluationLabels} />
       </div>
@@ -45,44 +41,10 @@ const titleStyle: React.CSSProperties = {
   marginBottom: "0.5rem",
 };
 
-const videoStyle: React.CSSProperties = {
-  width: "100%",
-  maxWidth: "500px",
-  height: "auto",
-  borderRadius: "10px",
-  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-};
-
 const evaluationContainerStyle: React.CSSProperties = {
   marginTop: "1rem",
   width: "100%",
   maxWidth: "500px",
-};
-
-const evaluationRowStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  marginBottom: "0.5rem",
-};
-
-const labelStyle: React.CSSProperties = {
-  flex: "0 0 120px",
-  textAlign: "right",
-  marginRight: "1rem",
-  fontWeight: "bold",
-};
-
-const ratingButtonsStyle: React.CSSProperties = {
-  display: "flex",
-};
-
-const ratingButtonStyle: React.CSSProperties = {
-  margin: "0 0.25rem",
-  padding: "0.5rem 1rem",
-  border: "none",
-  borderRadius: "5px",
-  color: "#fff",
-  cursor: "pointer",
 };
 
 export default ImagesWithEvaluation;
