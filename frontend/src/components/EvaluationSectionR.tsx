@@ -27,6 +27,7 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
   const [ratingModelB, setRatingModelB] = useState<(number | null)[]>(
     new Array(evaluationLabels.length).fill(null)
   );
+  const [abChoice, setAbChoice] = useState<string | null>(null);
   // 現在のシーン情報（getRandomR の結果）
   const [sceneData, setSceneData] = useState<any>(null);
   // resetTrigger を追加。シーン切替時にこの値をインクリメントしてリセットを通知する
@@ -80,6 +81,7 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
       setGlobalSlideIndex(0);
       setRatingModelA(new Array(evaluationLabels.length).fill(null));
       setRatingModelB(new Array(evaluationLabels.length).fill(null));
+      setAbChoice(null);
       // リセット通知用のトリガーを更新
       setResetTrigger((prev) => prev + 1);
     } catch (error) {
@@ -118,7 +120,7 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
     // チェック：どちらかに未入力がある場合はアラート
     const incompleteA = ratingModelA.some((rating) => rating === null);
     const incompleteB = ratingModelB.some((rating) => rating === null);
-    if (incompleteA || incompleteB) {
+    if (incompleteA || incompleteB || abChoice === null) {
       alert("すべての評価項目に入力してください。");
       return;
     }
@@ -165,6 +167,29 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
       return;
     }
 
+    // ABテスト
+    const abPayload = {
+      win_model: abChoice === "A" ? sceneData.model1 : sceneData.model2,
+      lose_model: abChoice === "A" ? sceneData.model2 : sceneData.model1,
+      scene: sceneData.data,
+    };
+    try {
+      const res = await fetch(`${API_URL}/api/submit_AB`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(abPayload),
+      });
+      console.log("AB payload:", abPayload);
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      const result = await res.json();
+      console.log("AB test submitted:", result);
+    } catch (error) {
+      console.error("Error submitting AB test result:", error);
+      return;
+    }
+
     // バックエンド送信後、親コールバック（onNext）を呼び出し、次シーンを取得
     onNext && onNext(payloadRatings);
     fetchRandomScene();
@@ -194,6 +219,26 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
           </button>
           <button onClick={handleGlobalNext} style={buttonStyle}>
             Next
+          </button>
+        </div>
+        <div style={abTestControlsStyle}>
+          <button
+            onClick={() => setAbChoice("A")}
+            style={{
+              ...abButtonStyle,
+              backgroundColor: abChoice === "A" ? "#007bff" : "#ccc",
+            }}
+          >
+            A
+          </button>
+          <button
+            onClick={() => setAbChoice("B")}
+            style={{
+              ...abButtonStyle,
+              backgroundColor: abChoice === "B" ? "#007bff" : "#ccc",
+            }}
+          >
+            B
           </button>
         </div>
         <button onClick={handleNextScene} style={nextSceneButtonStyle}>
@@ -269,6 +314,22 @@ const nextSceneButtonStyle: React.CSSProperties = {
   borderRadius: "5px",
   cursor: "pointer",
   marginTop: "1rem",
+};
+
+const abTestControlsStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  marginBottom: "10px",
+};
+
+const abButtonStyle: React.CSSProperties = {
+  margin: "0 0.5rem",
+  padding: "0.5rem 1rem",
+  fontSize: "16px",
+  border: "none",
+  borderRadius: "5px",
+  color: "#fff",
+  cursor: "pointer",
 };
 
 export default EvaluationSectionR;
