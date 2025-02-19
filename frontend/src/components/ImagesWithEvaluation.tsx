@@ -24,7 +24,10 @@ const ImagesWithEvaluation: React.FC<ImagesWithEvaluationProps> = ({
       <h2 style={titleStyle}>{imageTitle}</h2>
       <Slideshow imageUrls={imageUrls} currentIndex={currentSlideIndex} />
       <div style={evaluationContainerStyle}>
-        <RatingButtons evaluationLabels={evaluationLabels} />
+        <RatingButtons
+          evaluationLabels={evaluationLabels}
+          onEvaluationChange={onEvaluationChange}
+        />
       </div>
     </div>
   );

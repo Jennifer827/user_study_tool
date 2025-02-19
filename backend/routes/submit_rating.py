@@ -7,7 +7,12 @@ import os
 submit_rating = Blueprint('submit_rating', __name__)
 CORS(submit_rating)
 
+DATA_DIR = "ratings"  # 保存ディレクトリを指定
+os.makedirs(DATA_DIR, exist_ok=True)  # ディレクトリがなければ作成
 RATINGS_FILE = "ratings.json"
+
+def get_client_ip():
+    return request.remote_addr
 
 @submit_rating.route('/api/submit_rating', methods=['POST'])
 def submit_rating_endpoint():
@@ -15,18 +20,13 @@ def submit_rating_endpoint():
     if not data:
         return jsonify({"error": "No data received"}), 400
 
-    # 期待するペイロード: videoTitle, criterion, rating
-    video_title = data.get("videoTitle", "Unknown")
-    criterion = data.get("criterion")
-    rating = data.get("rating")
-
-    if criterion is None or rating is None:
-        return jsonify({"error": "Missing fields"}), 400
-
+    ip = get_client_ip()
+    file_path = os.path.join(DATA_DIR, f"{ip}_ratings.json")
+    
     # 既存の評価データを読み込む（存在しなければ新規作成）
-    if os.path.exists(RATINGS_FILE):
+    if os.path.exists(file_path):
         try:
-            with open(RATINGS_FILE, "r") as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 ratings_data = json.load(f)
                 if not isinstance(ratings_data, list):
                     ratings_data = []
@@ -35,14 +35,9 @@ def submit_rating_endpoint():
     else:
         ratings_data = []
 
-    new_entry = {
-        "videoTitle": video_title,
-        "criterion": criterion,
-        "rating": rating
-    }
-    ratings_data.append(new_entry)
+    ratings_data.append(data)
 
-    with open(RATINGS_FILE, "w") as f:
+    with open(file_path, "w") as f:
         json.dump(ratings_data, f, indent=4)
 
-    return jsonify({"message": "Rating saved successfully!", "entry": new_entry})
+    return jsonify({"message": "Rating saved successfully!", "entry": data})

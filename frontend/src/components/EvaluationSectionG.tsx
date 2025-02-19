@@ -29,9 +29,9 @@ const EvaluationSectionG: React.FC<EvaluationSectionGProps> = ({ onNext }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json(); // { model1: string, model2: string, data: string }
-      setVideoSrc1(`/generated/${data.data}/${data.model1}.mp4`);
-      setVideoSrc2(`/generated/${data.data}/${data.model2}.mp4`);
-      setOriginalImageSrc(`/generated/${data.data}/original.png`);
+      setVideoSrc1(`/generated/${data.model1}/${data.data}.mp4`);
+      setVideoSrc2(`/generated/${data.model2}/${data.data}.mp4`);
+      setOriginalImageSrc(`/generated/original/${data.data}.png`);
       // Next ボタン押下時のみ進捗を更新する
       if (shouldUpdateProgress) {
         onNext && onNext(data);
