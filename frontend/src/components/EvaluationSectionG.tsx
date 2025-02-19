@@ -30,6 +30,8 @@ const EvaluationSectionG: React.FC<EvaluationSectionGProps> = ({ onNext }) => {
   );
   // 現在のシーン情報（getRandomR の結果）
   const [sceneData, setSceneData] = useState<any>(null);
+  // resetTrigger を追加。シーン切替時にこの値をインクリメントしてリセットを通知する
+  const [resetTrigger, setResetTrigger] = useState<number>(0);
 
   // 引数 shouldUpdateProgress により、進捗更新の有無を制御
   const fetchRandomScene = async (shouldUpdateProgress: boolean = true) => {
@@ -47,10 +49,8 @@ const EvaluationSectionG: React.FC<EvaluationSectionGProps> = ({ onNext }) => {
       setGlobalSlideIndex(0);
       setRatingModelA(new Array(evaluationLabels.length).fill(null));
       setRatingModelB(new Array(evaluationLabels.length).fill(null));
-      // Next ボタン押下時のみ進捗を更新する
-      // if (shouldUpdateProgress) {
-      //   onNext && onNext(data);
-      // }
+      // リセット通知用のトリガーを更新
+      setResetTrigger((prev) => prev + 1);
     } catch (error) {
       console.error("Error fetching random scene:", error);
     }
@@ -136,6 +136,7 @@ const EvaluationSectionG: React.FC<EvaluationSectionGProps> = ({ onNext }) => {
             newRatings[criterionIndex] = rating;
             setRatingModelA(newRatings);
           }}
+          resetTrigger={resetTrigger}
         />
       </div>
       <div style={centerSectionStyle}>
@@ -156,6 +157,7 @@ const EvaluationSectionG: React.FC<EvaluationSectionGProps> = ({ onNext }) => {
             newRatings[criterionIndex] = rating;
             setRatingModelB(newRatings);
           }}
+          resetTrigger={resetTrigger}
         />
       </div>
     </div>

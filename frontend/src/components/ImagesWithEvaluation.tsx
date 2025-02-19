@@ -10,6 +10,7 @@ interface ImagesWithEvaluationProps {
   // 追加: グローバルな現在のスライドインデックス
   currentSlideIndex: number;
   onEvaluationChange?: (criterionIndex: number, rating: number) => void;
+  resetTrigger: number;
 }
 
 const ImagesWithEvaluation: React.FC<ImagesWithEvaluationProps> = ({
@@ -18,6 +19,7 @@ const ImagesWithEvaluation: React.FC<ImagesWithEvaluationProps> = ({
   evaluationLabels,
   currentSlideIndex,
   onEvaluationChange,
+  resetTrigger,
 }) => {
   return (
     <div style={containerStyle}>
@@ -27,6 +29,7 @@ const ImagesWithEvaluation: React.FC<ImagesWithEvaluationProps> = ({
         <RatingButtons
           evaluationLabels={evaluationLabels}
           onEvaluationChange={onEvaluationChange}
+          resetTrigger={resetTrigger}
         />
       </div>
     </div>

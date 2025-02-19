@@ -29,6 +29,8 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
   );
   // 現在のシーン情報（getRandomR の結果）
   const [sceneData, setSceneData] = useState<any>(null);
+  // resetTrigger を追加。シーン切替時にこの値をインクリメントしてリセットを通知する
+  const [resetTrigger, setResetTrigger] = useState<number>(0);
 
   /**
    * 指定されたディレクトリ内の画像ファイル名一覧を取得し、
@@ -78,6 +80,8 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
       setGlobalSlideIndex(0);
       setRatingModelA(new Array(evaluationLabels.length).fill(null));
       setRatingModelB(new Array(evaluationLabels.length).fill(null));
+      // リセット通知用のトリガーを更新
+      setResetTrigger((prev) => prev + 1);
     } catch (error) {
       console.error("Error fetching random scene:", error);
     }
@@ -180,6 +184,7 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
             newRatings[criterionIndex] = rating;
             setRatingModelA(newRatings);
           }}
+          resetTrigger={resetTrigger}
         />
       </div>
       <div style={centerSectionStyle}>
@@ -206,6 +211,7 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
             newRatings[criterionIndex] = rating;
             setRatingModelB(newRatings);
           }}
+          resetTrigger={resetTrigger}
         />
       </div>
     </div>
