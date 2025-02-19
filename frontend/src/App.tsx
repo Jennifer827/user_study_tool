@@ -3,7 +3,7 @@ import EvaluationSectionR from "./components/EvaluationSectionR";
 import EvaluationSectionG from "./components/EvaluationSectionG";
 import ProgressBar from "./components/ProgressBar";
 
-const TOTAL_EVALUATIONS_PER_MODE = 15;
+const TOTAL_EVALUATIONS_PER_MODE = 2;
 const TOTAL_EVALUATIONS = TOTAL_EVALUATIONS_PER_MODE * 2; // 30件
 
 interface SelectedData {
@@ -42,7 +42,7 @@ const App: React.FC = () => {
   if (currentEvaluation > TOTAL_EVALUATIONS) {
     return (
       <div>
-        <h1>ご協力ありがとうございました。</h1>
+        <h1>ご協力いただき誠にありがとうございました。</h1>
       </div>
     );
   }
@@ -51,19 +51,9 @@ const App: React.FC = () => {
       {/* <h1>3D生成モデル評価実験</h1> */}
       <ProgressBar current={currentEvaluation} total={TOTAL_EVALUATIONS} />
       {mode === "reconstruction" ? (
-        <EvaluationSectionR
-          videoSrc1="/video3.mp4"
-          videoSrc2="/video4.mp4"
-          originalImageSrc="/chicken.png"
-          onNext={handleNext}
-        />
+        <EvaluationSectionR onNext={handleNext} />
       ) : (
-        <EvaluationSectionG
-          // videoSrc1="/video3.mp4"
-          // videoSrc2="/video4.mp4"
-          // originalImageSrc="/chicken.png"
-          onNext={handleNext}
-        />
+        <EvaluationSectionG onNext={handleNext} />
       )}
     </div>
   );
@@ -72,6 +62,7 @@ const App: React.FC = () => {
 const appContainerStyle: React.CSSProperties = {
   padding: "1rem",
   fontFamily: "sans-serif",
+  display: "flex",
 };
 
 export default App;

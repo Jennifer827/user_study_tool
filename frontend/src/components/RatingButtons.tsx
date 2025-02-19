@@ -1,46 +1,26 @@
 // src/components/RatingButtons.tsx
-import React, { useState } from "react";
-import API_URL from "../config";
+import React, { useState, useEffect } from "react";
 
-interface VideoWithEvaluationProps {
+interface RatingButtonsProps {
   evaluationLabels: string[];
-  // 必要なら親へ評価変更を通知するコールバックも追加可能
+  // onEvaluationChange(criterionIndex, rating) で親に通知する
   onEvaluationChange?: (criterionIndex: number, rating: number) => void;
+  resetTrigger: number;
 }
 
-const RatingButtons: React.FC<VideoWithEvaluationProps> = ({
+const RatingButtons: React.FC<RatingButtonsProps> = ({
   evaluationLabels,
   onEvaluationChange,
+  resetTrigger,
 }) => {
   // 各評価観点ごとの評価状態（初期はnull）
   const [evaluationRatings, setEvaluationRatings] = useState<(number | null)[]>(
     new Array(evaluationLabels.length).fill(null)
   );
 
-  // バックエンドに評価結果を送信する非同期関数
-  const sendRatingToBackend = async (
-    criterionIndex: number,
-    rating: number
-  ) => {
-    try {
-      const payload = {
-        criterion: evaluationLabels[criterionIndex],
-        rating: rating,
-      };
-      const res = await fetch(`${API_URL}/api/submit_rating`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-      const result = await res.json();
-      console.log("Rating submitted:", result);
-    } catch (error) {
-      console.error("Error submitting rating:", error);
-    }
-  };
+  useEffect(() => {
+    setEvaluationRatings(new Array(evaluationLabels.length).fill(null));
+  }, [resetTrigger, evaluationLabels.length]);
 
   // 評価ボタンがクリックされたときの処理
   const handleRating = (criterionIndex: number, rating: number) => {
@@ -50,8 +30,6 @@ const RatingButtons: React.FC<VideoWithEvaluationProps> = ({
     if (onEvaluationChange) {
       onEvaluationChange(criterionIndex, rating);
     }
-    // バックエンドに送信
-    sendRatingToBackend(criterionIndex, rating);
   };
 
   return (

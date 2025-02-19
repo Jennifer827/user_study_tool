@@ -7,28 +7,30 @@ interface VideoWithEvaluationProps {
   videoSrc: string;
   videoTitle: string;
   evaluationLabels: string[];
+  currentSlideIndex: number;
   // 必要なら親へ評価変更を通知するコールバックも追加可能
   onEvaluationChange?: (criterionIndex: number, rating: number) => void;
+  resetTrigger: number;
 }
 
 const VideoWithEvaluation: React.FC<VideoWithEvaluationProps> = ({
   videoSrc,
   videoTitle,
   evaluationLabels,
+  currentSlideIndex,
   onEvaluationChange,
+  resetTrigger,
 }) => {
-  // 各評価観点ごとの評価状態（初期はnull）
-  const [evaluationRatings, setEvaluationRatings] = useState<(number | null)[]>(
-    new Array(evaluationLabels.length).fill(null)
-  );
-  // バックエンドに評価結果を送信する非同期関数
-
   return (
     <div style={containerStyle}>
       <h2 style={titleStyle}>{videoTitle}</h2>
       <VideoPlayer videoSrc={videoSrc} />
       <div style={evaluationContainerStyle}>
-        <RatingButtons evaluationLabels={evaluationLabels} />
+        <RatingButtons
+          evaluationLabels={evaluationLabels}
+          onEvaluationChange={onEvaluationChange}
+          resetTrigger={resetTrigger}
+        />
       </div>
     </div>
   );

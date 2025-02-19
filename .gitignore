@@ -6,3 +6,4 @@ ratings.json
 *.pyc
 *.csv
 frontend/public
+backend/ratings
