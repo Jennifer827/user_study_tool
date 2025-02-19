@@ -3,7 +3,7 @@ import EvaluationSectionR from "./components/EvaluationSectionR";
 import EvaluationSectionG from "./components/EvaluationSectionG";
 import ProgressBar from "./components/ProgressBar";
 
-const TOTAL_EVALUATIONS_PER_MODE = 15;
+const TOTAL_EVALUATIONS_PER_MODE = 1;
 const TOTAL_EVALUATIONS = TOTAL_EVALUATIONS_PER_MODE * 2; // 30件
 
 interface SelectedData {
