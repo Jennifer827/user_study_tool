@@ -1,6 +1,7 @@
 // src/components/EvaluationSectionR.tsx
 import React, { useEffect, useState } from "react";
 import ImagesWithEvaluation from "./ImagesWithEvaluation";
+import Slideshow from "./SlideShow";
 import API_URL from "../config";
 
 const evaluationLabels = [
@@ -18,6 +19,7 @@ interface EvaluationSectionRProps {
 const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
   const [imageList1, setImageList1] = useState<string[]>([]);
   const [imageList2, setImageList2] = useState<string[]>([]);
+  const [imageListOri, setImageListOri] = useState<string[]>([]);
   // グローバルなスライドインデックス
   const [globalSlideIndex, setGlobalSlideIndex] = useState<number>(0);
   // 各モデルの評価（項目数分の配列、初期はすべて null）
@@ -69,14 +71,17 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
       setSceneData(data);
       const dir1 = `/reconstructed/${data.data}/${data.model1}/`;
       const dir2 = `/reconstructed/${data.data}/${data.model2}/`;
+      const dir_ori = `/reconstructed/${data.data}/GT/`;
 
-      const [list1, list2] = await Promise.all([
+      const [list1, list2, list_ori] = await Promise.all([
         fetchImageList(dir1),
         fetchImageList(dir2),
+        fetchImageList(dir_ori),
       ]);
 
       setImageList1(list1);
       setImageList2(list2);
+      setImageListOri(list_ori);
       // シーンが変わったらスライドインデックスと評価状態をリセット
       setGlobalSlideIndex(0);
       setRatingModelA(new Array(evaluationLabels.length).fill(null));
@@ -213,6 +218,8 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
         />
       </div>
       <div style={centerSectionStyle}>
+        <h2 style={titleStyle}>Reference Image</h2>
+        <Slideshow imageUrls={imageListOri} currentIndex={globalSlideIndex} />
         <div style={controlsStyle}>
           <button onClick={handleGlobalPrev} style={buttonStyle}>
             Prev
@@ -221,6 +228,7 @@ const EvaluationSectionR: React.FC<EvaluationSectionRProps> = ({ onNext }) => {
             Next
           </button>
         </div>
+        <h2 style={titleStyle}>Which model is better?</h2>
         <div style={abTestControlsStyle}>
           <button
             onClick={() => setAbChoice("A")}
@@ -267,9 +275,9 @@ const videosContainerStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-around",
   alignItems: "flex-start",
-  flexWrap: "wrap",
+  flexWrap: "nowrap",
   width: "100%",
-  maxWidth: "2000px",
+  maxWidth: "3000px",
   margin: "0 auto",
 };
 
@@ -323,13 +331,26 @@ const abTestControlsStyle: React.CSSProperties = {
 };
 
 const abButtonStyle: React.CSSProperties = {
-  margin: "0 0.5rem",
+  margin: "0 1rem",
   padding: "0.5rem 1rem",
   fontSize: "16px",
   border: "none",
   borderRadius: "5px",
   color: "#fff",
   cursor: "pointer",
+};
+
+const titleStyle: React.CSSProperties = {
+  textAlign: "center",
+  marginBottom: "0.5rem",
+};
+
+const originalImageStyle: React.CSSProperties = {
+  width: "100%",
+  maxWidth: "500px",
+  height: "auto",
+  borderRadius: "10px",
+  marginBottom: "1rem",
 };
 
 export default EvaluationSectionR;

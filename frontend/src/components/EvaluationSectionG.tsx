@@ -213,9 +213,9 @@ const videosContainerStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-around",
   alignItems: "flex-start",
-  flexWrap: "wrap",
+  flexWrap: "nowrap",
   width: "100%",
-  maxWidth: "2000px",
+  maxWidth: "3000px",
   margin: "0 auto",
 };
 
