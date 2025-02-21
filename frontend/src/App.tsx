@@ -3,7 +3,7 @@ import EvaluationSectionR from "./components/EvaluationSectionR";
 import EvaluationSectionG from "./components/EvaluationSectionG";
 import ProgressBar from "./components/ProgressBar";
 
-const TOTAL_EVALUATIONS_PER_MODE = 2;
+const TOTAL_EVALUATIONS_PER_MODE = 15;
 const TOTAL_EVALUATIONS = TOTAL_EVALUATIONS_PER_MODE * 2; // 30件
 
 interface SelectedData {
@@ -11,7 +11,6 @@ interface SelectedData {
   model2: string;
   data: string;
 }
-
 const App: React.FC = () => {
   const [currentEvaluation, setCurrentEvaluation] = useState<number>(1); // 現在の評価番号（1～30）
   const [mode, setMode] = useState<"reconstruction" | "generation">( // モード：1～15は reconstruction、16～30は generation
