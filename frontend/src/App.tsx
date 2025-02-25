@@ -3,8 +3,10 @@ import EvaluationSectionR from "./components/EvaluationSectionR";
 import EvaluationSectionG from "./components/EvaluationSectionG";
 import ProgressBar from "./components/ProgressBar";
 
-const TOTAL_EVALUATIONS_PER_MODE = 15;
-const TOTAL_EVALUATIONS = TOTAL_EVALUATIONS_PER_MODE * 2; // 30件
+const TOTAL_EVALUATIONS_RECONSTRUCTION = 5;
+const TOTAL_EVALUATIONS_GENERATION = 10;
+const TOTAL_EVALUATIONS =
+  TOTAL_EVALUATIONS_RECONSTRUCTION + TOTAL_EVALUATIONS_GENERATION; // 30件
 
 interface SelectedData {
   model1: string;
@@ -22,7 +24,7 @@ const App: React.FC = () => {
 
   // 評価番号が変化したらモードを切り替える
   useEffect(() => {
-    if (currentEvaluation > TOTAL_EVALUATIONS_PER_MODE) {
+    if (currentEvaluation > TOTAL_EVALUATIONS_RECONSTRUCTION) {
       setMode("generation");
     } else {
       setMode("reconstruction");

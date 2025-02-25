@@ -20,7 +20,7 @@ def submit_AB_endpoint():
         return jsonify({"error": "No data received"}), 400
 
     ip = get_client_ip()
-    file_path = os.path.join(DATA_DIR, f"{ip}_AB.json")
+    file_path = os.path.join(DATA_DIR, f"{ip}_AB_prod.json")
     
     # 既存の評価データを読み込む（存在しなければ新規作成）
     if os.path.exists(file_path):

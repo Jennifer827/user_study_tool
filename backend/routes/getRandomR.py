@@ -7,7 +7,7 @@ getRandomR = Blueprint('getRandomR', __name__)
 CORS(getRandomR)
 
 # モデルとデータの名前リスト（必要に応じて更新してください）
-MODELS = ["INGP", "NerfStudio", "Mip-NeRF360", "3DGS"]
+MODELS = ["2DGS", "3DGS", "3DGS-MCMC", "COLMAP", "GOF", "INGP", "Mip-NeRF360", "Mip-splatting", "NerfStudio", "Scaffold-GS", "Zip-NeRF", "gsplat"]
 DATA_NAMES = ["bicycle", "bonsai", "counter", "garden", "kitchen", "room", "treehill"]
 
 @getRandomR.route('/api/getRandomR', methods=['GET'])

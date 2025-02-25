@@ -21,7 +21,7 @@ def submit_rating_endpoint():
         return jsonify({"error": "No data received"}), 400
 
     ip = get_client_ip()
-    file_path = os.path.join(DATA_DIR, f"{ip}_ratings.json")
+    file_path = os.path.join(DATA_DIR, f"{ip}_ratings_prod.json")
     
     # 既存の評価データを読み込む（存在しなければ新規作成）
     if os.path.exists(file_path):
