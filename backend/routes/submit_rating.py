@@ -7,7 +7,7 @@ import os
 submit_rating = Blueprint('submit_rating', __name__)
 CORS(submit_rating)
 
-DATA_DIR = "ratings"  # 保存ディレクトリを指定
+DATA_DIR = "ratings_prod"  # 保存ディレクトリを指定
 os.makedirs(DATA_DIR, exist_ok=True)  # ディレクトリがなければ作成
 RATINGS_FILE = "ratings.json"
 

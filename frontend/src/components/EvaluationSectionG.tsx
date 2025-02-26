@@ -5,7 +5,7 @@ import API_URL from "../config";
 
 const evaluationLabels = [
   "Visual Quality",
-  "Semantic Quality",
+  // "Semantic Quality",
   "Objectness",
   "Structural Quality",
   "Overall Quality",
