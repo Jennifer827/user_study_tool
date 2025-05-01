@@ -8,10 +8,8 @@ import os
 getRandomG = Blueprint('getRandomG', __name__)
 CORS(getRandomG)
 
-RATINGS_FILE = "ratings.json"
-
-MODELS = ["DG", "TGS"]
-DATA_NAMES = ["airplane", "bird"]
+MODELS = ["DG", "TGS", "LGM", "CRM", "One-2-3-45++", "Unique3D"]
+DATA_NAMES = ["airplane", "bird", "bottle", "bowl", "browncup", "bus", "chicken", "clock", "couch", "cow", "cup", "dish", "hammer", "hdd", "horse", "keyboard", "laptop", "lion", "mouse", "pitcher", "rhino", "scissors", "shark", "teapot", "teddydog", "thomas", "towel", "turtle", "unicorn", "wiiu"]
 
 @getRandomG.route('/api/getRandomG', methods=['GET'])
 def get_random_sceneG():

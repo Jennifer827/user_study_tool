@@ -7,3 +7,4 @@ ratings.json
 *.csv
 frontend/public
 backend/ratings
+backend/ratings_prod

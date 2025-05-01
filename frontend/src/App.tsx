@@ -3,15 +3,16 @@ import EvaluationSectionR from "./components/EvaluationSectionR";
 import EvaluationSectionG from "./components/EvaluationSectionG";
 import ProgressBar from "./components/ProgressBar";
 
-const TOTAL_EVALUATIONS_PER_MODE = 2;
-const TOTAL_EVALUATIONS = TOTAL_EVALUATIONS_PER_MODE * 2; // 30件
+const TOTAL_EVALUATIONS_RECONSTRUCTION = 5;
+const TOTAL_EVALUATIONS_GENERATION = 10;
+const TOTAL_EVALUATIONS =
+  TOTAL_EVALUATIONS_RECONSTRUCTION + TOTAL_EVALUATIONS_GENERATION; // 30件
 
 interface SelectedData {
   model1: string;
   model2: string;
   data: string;
 }
-
 const App: React.FC = () => {
   const [currentEvaluation, setCurrentEvaluation] = useState<number>(1); // 現在の評価番号（1～30）
   const [mode, setMode] = useState<"reconstruction" | "generation">( // モード：1～15は reconstruction、16～30は generation
@@ -23,7 +24,7 @@ const App: React.FC = () => {
 
   // 評価番号が変化したらモードを切り替える
   useEffect(() => {
-    if (currentEvaluation > TOTAL_EVALUATIONS_PER_MODE) {
+    if (currentEvaluation > TOTAL_EVALUATIONS_RECONSTRUCTION) {
       setMode("generation");
     } else {
       setMode("reconstruction");
@@ -43,6 +44,7 @@ const App: React.FC = () => {
     return (
       <div>
         <h1>ご協力いただき誠にありがとうございました。</h1>
+        <h2>ブラウザ上部のタブを消して画面を閉じてください。</h2>
       </div>
     );
   }

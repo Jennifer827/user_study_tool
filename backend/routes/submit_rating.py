@@ -7,7 +7,7 @@ import os
 submit_rating = Blueprint('submit_rating', __name__)
 CORS(submit_rating)
 
-DATA_DIR = "ratings"  # 保存ディレクトリを指定
+DATA_DIR = "ratings_prod"  # 保存ディレクトリを指定
 os.makedirs(DATA_DIR, exist_ok=True)  # ディレクトリがなければ作成
 RATINGS_FILE = "ratings.json"
 
@@ -21,7 +21,7 @@ def submit_rating_endpoint():
         return jsonify({"error": "No data received"}), 400
 
     ip = get_client_ip()
-    file_path = os.path.join(DATA_DIR, f"{ip}_ratings.json")
+    file_path = os.path.join(DATA_DIR, f"{ip}_ratings_prod.json")
     
     # 既存の評価データを読み込む（存在しなければ新規作成）
     if os.path.exists(file_path):

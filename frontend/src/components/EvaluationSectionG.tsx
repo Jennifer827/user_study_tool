@@ -5,9 +5,9 @@ import API_URL from "../config";
 
 const evaluationLabels = [
   "Visual Quality",
-  "Semantic Quality",
-  "Structural Quality",
+  // "Semantic Quality",
   "Objectness",
+  "Structural Quality",
   "Overall Quality",
 ];
 
@@ -213,9 +213,9 @@ const videosContainerStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-around",
   alignItems: "flex-start",
-  flexWrap: "wrap",
+  flexWrap: "nowrap",
   width: "100%",
-  maxWidth: "2000px",
+  maxWidth: "3000px",
   margin: "0 auto",
 };
 
